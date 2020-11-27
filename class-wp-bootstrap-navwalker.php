@@ -175,7 +175,9 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 
 			// Add some additional default classes to the item.
 			$classes[] = 'menu-item-' . $item->ID;
-			$classes[] = 'nav-item';
+            if ($depth === 0) {
+                $classes[] = 'nav-item';
+            }
 
 			// Allow filtering the classes.
 			$classes = apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args, $depth );
@@ -216,7 +218,11 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 				$atts['data-toggle']   = 'dropdown';
 				$atts['aria-haspopup'] = 'true';
 				$atts['aria-expanded'] = 'false';
-				$atts['class']         = 'dropdown-toggle nav-link';
+                if ($depth === 0) {
+					$atts['class'] = 'dropdown-toggle nav-link';
+				} else {
+					$atts['class'] = 'dropdown-toggle dropdown-item';
+				}
 				$atts['id']            = 'menu-item-dropdown-' . $item->ID;
 			} else {
 				if ( true === $this->has_schema ) {
