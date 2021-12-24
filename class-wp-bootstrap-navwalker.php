@@ -8,7 +8,7 @@
  * Plugin Name: WP Bootstrap Navwalker
  * Plugin URI:  https://github.com/wp-bootstrap/wp-bootstrap-navwalker
  * Description: A custom WordPress nav walker class to implement the Bootstrap 4 navigation style in a custom theme using the WordPress built in menu manager.
- * Author: Edward McIntyre - @twittem, WP Bootstrap, William Patton - @pattonwebz
+ * Author: Edward McIntyre - @twittem, WP Bootstrap, William Patton - @pattonwebz, IanDelMar - @IanDelMar
  * Version: 4.3.0
  * Author URI: https://github.com/wp-bootstrap
  * GitHub Plugin URI: https://github.com/wp-bootstrap/wp-bootstrap-navwalker
@@ -247,7 +247,8 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 			$atts['aria-current'] = $item->current ? 'page' : '';
 
 			// Update atts of this item based on any custom linkmod classes.
-			$atts = $this->update_atts_for_linkmod_type($atts, $linkmod_classes);
+			$atts = $this->update_atts_for_linkmod_type( $atts, $linkmod_classes );
+
 			// Allow filtering of the $atts array before using it.
 			$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args, $depth );
 
@@ -306,7 +307,8 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 
 			// If the .sr-only class was set apply to the nav items text only.
 			if ( in_array( 'sr-only', $linkmod_classes, true ) ) {
-                $title         = $this->wrap_for_screen_reader( $title );
+				$title         = $this->wrap_for_screen_reader( $title );
+
 				$keys_to_unset = array_keys( $linkmod_classes, 'sr-only', true );
 				foreach ( $keys_to_unset as $k ) {
 					unset( $linkmod_classes[ $k ] );
@@ -322,7 +324,8 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 			 */
 			if ( '' !== $linkmod_type ) {
 				// Is linkmod, output the required closing element.
-				$item_output .= $this->linkmod_element_close($linkmod_type);
+				$item_output .= $this->linkmod_element_close( $linkmod_type );
+
 			} else {
 				// With no link mod type set this must be a standard <a> tag.
 				$item_output .= '</a>';
@@ -436,11 +439,12 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 		 * @return array $args The altered nav instance arguments.
 		 */
 		public function add_schema_to_navbar_ul( $args ) {
-			$wrap = $args['items_wrap'];
-			if ( strpos( $wrap, 'SiteNavigationElement' ) === false ) {
-				$args['items_wrap'] = preg_replace( '/(>).*>?\%3\$s/', ' itemscope itemtype="http://www.schema.org/SiteNavigationElement"$0', $wrap );
+			if ( isset( $args['items_wrap'] ) ) {
+				$wrap = $args['items_wrap'];
+				if ( strpos( $wrap, 'SiteNavigationElement' ) === false ) {
+					$args['items_wrap'] = preg_replace( '/(>).*>?\%3\$s/', ' itemscope itemtype="http://www.schema.org/SiteNavigationElement"$0', $wrap );
+				}
 			}
-
 			return $args;
 		}
 
