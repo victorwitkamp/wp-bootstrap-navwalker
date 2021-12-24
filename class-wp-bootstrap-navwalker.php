@@ -427,8 +427,8 @@ if ( ! class_exists( 'WP_Bootstrap_Navwalker' ) ) :
 				} else {
 					return $fallback_output;
 				}
-			}
-        }
+      }
+    }
 
 		/**
 		 * Filter to ensure the items_Wrap argument contains microdata.
